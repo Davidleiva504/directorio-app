@@ -1,25 +1,63 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ContactosForm from './ContactosForm';
+import DireccionesForm from './DireccionesForm';
+import CorreosForm from './CorreosForm';
+import TelefonosForm from './TelefonosForm';
+import ControlForm from './ControlForm';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
+
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('contactos');
+
+  const renderForm = () => {
+    switch (currentPage) {
+      case 'contactos':
+        return <ContactosForm />;
+      case 'direcciones':
+        return <DireccionesForm />;
+      case 'correos':
+        return <CorreosForm />;
+      case 'telefonos':
+        return <TelefonosForm />;
+      case 'control':
+        return <ControlForm />;
+      default:
+        return null;
+    }
+  };
+
+  const handleNavClick = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    
+      <div>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container">
+          <ul className="navbar-nav">
+            <li className="nav-item" onClick={() => handleNavClick('contactos')}>
+              <span className={`nav-link ${currentPage === 'contactos' && 'active'}`}>Contactos</span>
+            </li>
+            <li className="nav-item" onClick={() => handleNavClick('direcciones')}>
+              <span className={`nav-link ${currentPage === 'direcciones' && 'active'}`}>Direcciones</span>
+            </li>
+            <li className="nav-item" onClick={() => handleNavClick('correos')}>
+              <span className={`nav-link ${currentPage === 'correos' && 'active'}`}>Correos</span>
+            </li>
+            <li className="nav-item" onClick={() => handleNavClick('telefonos')}>
+              <span className={`nav-link ${currentPage === 'telefonos' && 'active'}`}>Teléfonos</span>
+            </li>
+            <li className="nav-item" onClick={() => handleNavClick('control')}>
+              <span className={`nav-link ${currentPage === 'control' && 'active'}`}>Control</span>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div>{renderForm()}</div>
     </div>
   );
-}
+};
 
 export default App;
