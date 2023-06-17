@@ -30,6 +30,7 @@ app.use(bodyParser.json());
 
 // Ruta get contactos
 app.get('/contactos', (req, res) => {
+  const contactId = req.params.id;
   connection.query('SELECT * FROM contactos', (error, results) => {
     if (error) {
       console.error('Error al obtener los datos de la tabla contactos:', error);
@@ -259,29 +260,75 @@ app.put('/control/:id', (req, res) => {
 app.delete('/contactos/:id', (req, res) => {
   const id = req.params.id;
 
-  db.query('DELETE FROM contactos WHERE id = ?', [id], (error, result) => {
+  // Eliminar registros relacionados en la tabla 'telefonos'
+  const deleteTelefonosQuery = 'DELETE FROM telefonos WHERE id_contacto = ?';
+  connection.query(deleteTelefonosQuery, [id], (error, result) => {
     if (error) {
-      console.error('Error al eliminar el contacto:', error);
-      res.status(500).send('Error al eliminar el contacto');
+      console.error('Error al eliminar los teléfonos relacionados:', error);
+      res.status(500).json({ error: 'Error al eliminar los teléfonos relacionados' });
     } else {
-      res.send('Contacto eliminado correctamente');
+      // Eliminar registros relacionados en la tabla 'correo'
+      const deleteCorreoQuery = 'DELETE FROM correos WHERE id_contacto = ?';
+      connection.query(deleteCorreoQuery, [id], (error, result) => {
+        if (error) {
+          console.error('Error al eliminar los correos relacionados:', error);
+          res.status(500).json({ error: 'Error al eliminar los correos relacionados' });
+        } else {
+          // Eliminar registros relacionados en la tabla 'direcciones'
+          const deleteDireccionesQuery = 'DELETE FROM direcciones WHERE id_contacto = ?';
+          connection.query(deleteDireccionesQuery, [id], (error, result) => {
+            if (error) {
+              console.error('Error al eliminar las direcciones relacionadas:', error);
+              res.status(500).json({ error: 'Error al eliminar las direcciones relacionadas' });
+            } else {
+              // Eliminar registros relacionados en la tabla 'control'
+              const deleteControlQuery = 'DELETE FROM control WHERE id_contacto = ?';
+              connection.query(deleteControlQuery, [id], (error, result) => {
+                if (error) {
+                  console.error('Error al eliminar los controles relacionados:', error);
+                  res.status(500).json({ error: 'Error al eliminar los controles relacionados' });
+                } else {
+                  // Eliminar el contacto después de eliminar los registros relacionados
+                  const deleteContactoQuery = 'DELETE FROM contactos WHERE id = ?';
+                  connection.query(deleteContactoQuery, [id], (error, result) => {
+                    if (error) {
+                      console.error('Error al eliminar el contacto:', error);
+                      res.status(500).json({ error: 'Error al eliminar el contacto' });
+                    } else {
+                      if (result.affectedRows > 0) {
+                        res.sendStatus(200); // Éxito al eliminar el contacto
+                      } else {
+                        res.status(404).json({ error: 'Contacto no encontrado' });
+                      }
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
     }
   });
 });
+
 
 //Ruta Delete Correo
 app.delete('/correos/:id', (req, res) => {
   const id = req.params.id;
 
-  db.query('DELETE FROM correos WHERE id = ?', [id], (error, result) => {
+  const deleteQuery = 'DELETE FROM correos WHERE id = ?';
+
+  connection.query(deleteQuery, [id], (error) => {
     if (error) {
       console.error('Error al eliminar el correo:', error);
-      res.status(500).send('Error al eliminar el correo');
+      res.status(500).json({ error: 'Error al eliminar el contacto' });
     } else {
-      res.send('Correo eliminado correctamente');
+      res.sendStatus(200); // Éxito al eliminar el contacto
     }
   });
 });
+
 
 //Ruta Delete Telefonos
 app.delete('/direcciones/:id', (req, res) => {
@@ -310,8 +357,6 @@ app.delete('/control/:id', (req, res) => {
     }
   });
 });
-
-
 
 
 // Iniciar el servidor
