@@ -43,13 +43,12 @@ const CorreoForm = () => {
       .then(response => response.json())
       .then(data => {
         console.log('Correo guardado:', data);
-        // Realiza las acciones necesarias después de guardar el correo
-        // Por ejemplo, volver a obtener los correos actualizados
+        
         fetchCorreos();
       })
       .catch(error => {
         console.error('Error al guardar el correo:', error);
-        // Realiza las acciones necesarias en caso de error
+        
       });
   };
 

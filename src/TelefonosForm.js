@@ -46,12 +46,12 @@ const TelefonoForm = () => {
       .then(response => response.json())
       .then(data => {
         console.log('Teléfono guardado:', data);
-        // Realiza las acciones necesarias después de guardar el teléfono
+       
         fetchTelefonos();
       })
       .catch(error => {
         console.error('Error al guardar el teléfono:', error);
-        // Realiza las acciones necesarias en caso de error
+       
       });
   };
 

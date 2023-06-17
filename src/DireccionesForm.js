@@ -44,12 +44,12 @@ const DireccionesForm = () => {
       .then(response => response.json())
       .then(data => {
         console.log('Dirección guardada:', data);
-        // Realiza las acciones necesarias después de guardar la dirección
+        
         fetchDirecciones();
       })
       .catch(error => {
         console.error('Error al guardar la dirección:', error);
-        // Realiza las acciones necesarias en caso de error
+      
       });
   };
 

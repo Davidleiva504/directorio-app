@@ -33,17 +33,17 @@ const ContactosForm = () => {
     // Realizar la solicitud POST utilizando axios
     axios.post('http://localhost:3009/contactos', data)
       .then(response => {
-        // Aquí puedes manejar la respuesta del servidor si es necesario
+       
         fetchContactos();
         console.log(response.data);
         
-        // Reinicia los campos del formulario después de enviar los datos
+       
         setNombres('');
         setApellido('');
         setFecha_nacimiento('');
       })
       .catch(error => {
-        // Manejo de errores
+       
         console.error(error);
       });
   };
