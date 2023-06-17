@@ -54,7 +54,7 @@ const DireccionesForm = () => {
   };
 
   return (
-    <div>
+    <div class="p-5">
     <form onSubmit={handleSubmit}>
       <div className="mb-3">
         <label htmlFor="id" className="form-label">Id Contacto</label>
@@ -64,7 +64,7 @@ const DireccionesForm = () => {
             <option key={contacto.id} value={contacto.id}>{contacto.id}</option>
           ))}
         </select>
-      </div>
+      </div >
       <div className="mb-3">
         <label htmlFor="tipoDireccion" className="form-label">Tipo de Dirección</label>
         <select className="form-select" id="tipoDireccion" value={tipoDireccion} onChange={(e) => setTipoDireccion(e.target.value)}>

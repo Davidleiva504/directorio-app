@@ -54,7 +54,7 @@ const CorreoForm = () => {
   };
 
   return (
-    <div>
+    <div class="p-5">
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="id" className="form-label">Id Contacto</label>
